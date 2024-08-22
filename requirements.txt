@@ -1,0 +1,13 @@
+flask
+fastapi
+sqlalchemy
+numpy
+pandas
+scikit-learn
+tensorflow
+pytorch
+transformers
+diffusers
+jupyterlab
+matplotlib
+seaborn

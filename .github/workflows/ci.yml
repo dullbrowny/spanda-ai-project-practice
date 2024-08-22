@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ''
+
+    - name: Install backend dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint backend code
+      run: |
+        flake8 src/backend
+
+    - name: Run backend tests
+      run: |
+        pytest
+
+  react_frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ''
+
+    - name: Install React dependencies
+      run: |
+        cd src/frontend/react-app
+        npm install
+
+    - name: Lint React code
+      run: |
+        cd src/frontend/react-app
+        npm run lint
+
+    - name: Run React tests
+      run: |
+        cd src/frontend/react-app
+        npm test
+
+  angular_frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ''
+
+    - name: Install Angular dependencies
+      run: |
+        cd src/frontend/angular-app/angular-app
+        npm install
+
+    - name: Lint Angular code
+      run: |
+        cd src/frontend/angular-app/angular-app
+        npm run lint
+
+    - name: Run Angular tests
+      run: |
+        cd src/frontend/angular-app/angular-app
+        npm test
+
+  ai_workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ''
+
+    - name: Install AI dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run AI model tests
+      run: |
+        pytest src/ai/tests
+
+    - name: Validate AI notebooks
+      run: |
+        jupyter nbconvert --execute --inplace src/ai/notebooks/*.ipynb
